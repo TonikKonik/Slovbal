@@ -22,7 +22,7 @@ export function GameTile({ letter, state, isRevealing, revealDelay = 0 }: GameTi
   const isAnimating = isRevealing && isRevealed;
 
   return (
-    <div className="tile-perspective">
+    <div className="tile-perspective w-full h-full">
       <div
         className={`
           flex items-center justify-center

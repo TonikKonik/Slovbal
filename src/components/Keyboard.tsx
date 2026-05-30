@@ -36,7 +36,14 @@ interface KeyProps {
   onKey: (key: string) => void;
 }
 
-function Key({ value, letterStates, onKey }: KeyProps) {
+interface KeyProps {
+  value: string;
+  letterStates: Record<string, TileState>;
+  onKey: (key: string) => void;
+  small?: boolean;
+}
+
+function Key({ value, letterStates, onKey, small }: KeyProps) {
   const isSpecial = value === 'ENTER' || value === '⌫';
   const colorClass = isSpecial ? 'bg-[#565758] text-white border-[#565758]' : getKeyClass(value, letterStates);
 
@@ -51,17 +58,16 @@ function Key({ value, letterStates, onKey }: KeyProps) {
       onTouchStart={handlePress}
       className={`
         ${colorClass}
-        ${isSpecial ? 'px-2 text-xs sm:text-sm min-w-[48px] sm:min-w-[56px]' : 'w-8 sm:w-10 text-sm sm:text-base'}
-        h-12 sm:h-14
-        rounded
-        font-bold
-        uppercase
-        select-none
-        cursor-pointer
-        active:opacity-75
-        transition-opacity
-        flex items-center justify-center
-        border
+        ${isSpecial
+          ? 'px-2 text-xs min-w-[44px]'
+          : small
+            ? 'w-7 text-xs'
+            : 'w-8 sm:w-10 text-sm sm:text-base'
+        }
+        ${small ? 'h-9' : 'h-12 sm:h-14'}
+        rounded font-bold uppercase select-none cursor-pointer
+        active:opacity-75 transition-opacity
+        flex items-center justify-center border
       `}
       aria-label={value}
     >
@@ -72,19 +78,23 @@ function Key({ value, letterStates, onKey }: KeyProps) {
 
 export function Keyboard({ letterStates, onKey }: KeyboardProps) {
   return (
-    <div className="flex flex-col items-center gap-1.5 pb-4 px-1">
-      {ROWS.map((row, rowIndex) => (
-        <div key={rowIndex} className="flex gap-1 justify-center flex-wrap">
-          {row.map((key) => (
-            <Key
-              key={key}
-              value={key}
-              letterStates={letterStates}
-              onKey={onKey}
-            />
-          ))}
-        </div>
-      ))}
+    <div className="flex flex-col items-center gap-1 pb-2 px-1">
+      {ROWS.map((row, rowIndex) => {
+        const isSmallRow = rowIndex === 3;
+        return (
+          <div key={rowIndex} className="flex gap-1 justify-center flex-wrap">
+            {row.map((key) => (
+              <Key
+                key={key}
+                value={key}
+                letterStates={letterStates}
+                onKey={onKey}
+                small={isSmallRow}
+              />
+            ))}
+          </div>
+        );
+      })}
     </div>
   );
 }

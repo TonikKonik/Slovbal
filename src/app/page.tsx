@@ -205,7 +205,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen max-w-2xl mx-auto">
+    <div className="flex flex-col h-screen max-w-2xl mx-auto overflow-hidden">
       <Header
         difficulty={difficulty}
         isSoundEnabled={isSoundEnabled}
@@ -223,7 +223,7 @@ export default function Home() {
           <div className="text-text-secondary animate-pulse">Načítám slovo...</div>
         </div>
       ) : (
-        <div className="flex flex-col flex-1 gap-4 py-4">
+        <div className="flex flex-col flex-1 overflow-hidden py-2">
           <GameBoard
             gameState={gameState}
             difficulty={difficulty}
