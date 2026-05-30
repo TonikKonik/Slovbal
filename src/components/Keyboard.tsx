@@ -8,32 +8,22 @@ interface KeyboardProps {
 }
 
 const ROWS = [
+  ['Á', 'Č', 'Ď', 'É', 'Ě', 'Í', 'Ň', 'Ó', 'Ř', 'Š', 'Ť', 'Ú', 'Ý', 'Ž'],
   ['Q', 'W', 'E', 'R', 'T', 'Z', 'U', 'I', 'O', 'P'],
   ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ů'],
   ['ENTER', 'Y', 'X', 'C', 'V', 'B', 'N', 'M', '⌫'],
-  ['Á', 'Č', 'Ď', 'É', 'Ě', 'Í', 'Ň', 'Ó', 'Ř', 'Š', 'Ť', 'Ú', 'Ý', 'Ž'],
 ];
 
 const STATE_CLASSES: Record<string, string> = {
   correct: 'bg-key-correct text-white border-key-correct',
   present: 'bg-key-present text-white border-key-present',
   absent: 'bg-key-absent text-white border-key-absent',
-  default: 'bg-key-default text-white border-key-default',
+  default: 'bg-key-default text-text-primary border-key-default',
 };
 
 function getKeyClass(key: string, letterStates: Record<string, TileState>): string {
-  const lowerKey = key.toLowerCase();
-  const state = letterStates[lowerKey];
-  if (state && STATE_CLASSES[state]) {
-    return STATE_CLASSES[state];
-  }
-  return STATE_CLASSES.default;
-}
-
-interface KeyProps {
-  value: string;
-  letterStates: Record<string, TileState>;
-  onKey: (key: string) => void;
+  const state = letterStates[key.toLowerCase()];
+  return (state && STATE_CLASSES[state]) ? STATE_CLASSES[state] : STATE_CLASSES.default;
 }
 
 interface KeyProps {
@@ -45,29 +35,20 @@ interface KeyProps {
 
 function Key({ value, letterStates, onKey, small }: KeyProps) {
   const isSpecial = value === 'ENTER' || value === '⌫';
-  const colorClass = isSpecial ? 'bg-[#565758] text-white border-[#565758]' : getKeyClass(value, letterStates);
-
-  const handlePress = (e: React.MouseEvent) => {
-    e.preventDefault();
-    onKey(value);
-  };
+  const colorClass = isSpecial ? 'bg-key-special text-white border-key-special' : getKeyClass(value, letterStates);
 
   return (
     <button
-      onClick={handlePress}
-      className={`
-        ${colorClass}
-        ${isSpecial
-          ? 'px-2 text-xs min-w-[44px]'
+      onClick={(e) => { e.preventDefault(); onKey(value); }}
+      className={[
+        colorClass,
+        'rounded font-bold uppercase select-none cursor-pointer active:opacity-75 transition-opacity flex items-center justify-center border',
+        isSpecial
+          ? 'px-1.5 sm:px-2 text-[10px] sm:text-xs min-w-[40px] sm:min-w-[46px] h-10 sm:h-14'
           : small
-            ? 'w-7 text-xs'
-            : 'w-8 sm:w-10 text-sm sm:text-base'
-        }
-        ${small ? 'h-9' : 'h-12 sm:h-14'}
-        rounded font-bold uppercase select-none cursor-pointer
-        active:opacity-75 transition-opacity
-        flex items-center justify-center border
-      `}
+            ? 'w-6 sm:w-7 h-8 sm:h-9 text-[10px] sm:text-xs'
+            : 'w-[8.5vw] max-w-[40px] min-w-[28px] sm:w-10 h-10 sm:h-14 text-sm sm:text-base',
+      ].join(' ')}
       aria-label={value}
     >
       {value}
@@ -77,11 +58,14 @@ function Key({ value, letterStates, onKey, small }: KeyProps) {
 
 export function Keyboard({ letterStates, onKey }: KeyboardProps) {
   return (
-    <div className="flex flex-col items-center gap-1 pb-2 px-1">
+    <div className="flex flex-col items-center gap-[3px] sm:gap-1 pt-1 pb-1 sm:pb-2 px-1">
       {ROWS.map((row, rowIndex) => {
-        const isSmallRow = rowIndex === 3;
+        const isSmallRow = rowIndex === 0;
         return (
-          <div key={rowIndex} className="flex gap-1 justify-center flex-wrap">
+          <div
+            key={rowIndex}
+            className={`flex justify-center flex-nowrap ${isSmallRow ? 'gap-[2px] sm:gap-1' : 'gap-[3px] sm:gap-1'}`}
+          >
             {row.map((key) => (
               <Key
                 key={key}

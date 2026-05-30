@@ -53,7 +53,7 @@ function LetterTile({
   return (
     <button
       onClick={onClick}
-      className={`${base} bg-bg-secondary border-border-filled text-white hover:border-white hover:bg-white/10`}
+      className={`${base} bg-bg-secondary border-border-filled text-text-primary hover:border-border-filled hover:bg-bg-primary`}
     >
       {letter}
     </button>
@@ -82,7 +82,7 @@ function DifficultySelector({ onSelect }: { onSelect: (d: Difficulty) => void })
     <div className="flex flex-col items-center justify-center flex-1 gap-8 px-4">
       <div className="text-center">
         <div className="text-5xl mb-3">🔀</div>
-        <h2 className="text-3xl font-bold text-white">Anagram</h2>
+        <h2 className="text-3xl font-bold text-text-primary">Anagram</h2>
         <p className="text-text-secondary mt-2 max-w-xs">
           Zamíchané písmena — složíš slovo co nejrychleji. 5 kol, čím rychleji tím víc bodů.
         </p>
@@ -93,9 +93,9 @@ function DifficultySelector({ onSelect }: { onSelect: (d: Difficulty) => void })
           <button
             key={d}
             onClick={() => onSelect(d)}
-            className="w-full py-4 rounded-xl border border-border-default bg-bg-secondary hover:border-white hover:bg-bg-primary transition-all group"
+            className="w-full py-4 rounded-xl border border-border-default bg-bg-secondary hover:border-border-filled transition-all group"
           >
-            <div className="text-white font-bold text-lg">{DIFFICULTY_CONFIG[d].label}</div>
+            <div className="text-text-primary font-bold text-lg">{DIFFICULTY_CONFIG[d].label}</div>
             <div className="text-text-secondary text-sm mt-0.5">
               {DIFFICULTY_CONFIG[d].letters} písmen · {
                 d === 'lehka' ? '45 s' : d === 'stredni' ? '60 s' : '75 s'
@@ -121,12 +121,12 @@ function GameOverOverlay({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0,0,0,0.8)' }}>
       <div className="animate-modal-in bg-bg-secondary border border-border-default rounded-xl w-full max-w-sm p-6 text-center">
         <div className="text-5xl mb-3">{status === 'gameover' ? '🏆' : '⏱️'}</div>
-        <h2 className="text-2xl font-bold text-white mb-1">
+        <h2 className="text-2xl font-bold text-text-primary mb-1">
           {status === 'gameover' ? 'Hotovo!' : 'Čas vypršel!'}
         </h2>
         {isTimeout && (
           <p className="text-text-secondary text-sm mb-3">
-            Slovo bylo: <span className="text-white font-bold uppercase">{word}</span>
+            Slovo bylo: <span className="text-text-primary font-bold uppercase">{word}</span>
           </p>
         )}
         <div className="my-4">
@@ -142,7 +142,7 @@ function GameOverOverlay({
           </button>
           <button
             onClick={onChangeDifficulty}
-            className="w-full py-3 rounded-lg border border-border-default text-text-secondary font-bold hover:text-white hover:border-white transition-colors"
+            className="w-full py-3 rounded-lg border border-border-default text-text-secondary font-bold hover:text-text-primary hover:border-border-filled transition-colors"
           >
             Jiná obtížnost
           </button>
@@ -154,14 +154,42 @@ function GameOverOverlay({
 
 // ─── Main game ───────────────────────────────────────────────────────────────
 
-function AnagramGame({ difficulty, onChangeDifficulty }: { difficulty: Difficulty; onChangeDifficulty: () => void }) {
+// ─── Sub-nav ─────────────────────────────────────────────────────────────────
+
+function AnagramSubNav({ difficulty, onChangeDifficulty }: { difficulty: Difficulty; onChangeDifficulty: (d: Difficulty) => void }) {
+  return (
+    <div className="w-full border-b border-border-default bg-bg-primary">
+      <div className="max-w-lg mx-auto px-4 h-10 flex items-center">
+        <div className="flex items-center gap-1">
+          {DIFFICULTIES.map((d) => (
+            <button
+              key={d}
+              onClick={() => onChangeDifficulty(d)}
+              className={`px-3 py-1 rounded text-xs font-semibold transition-colors ${
+                d === difficulty
+                  ? 'bg-tile-correct text-white'
+                  : 'text-text-secondary hover:text-text-primary hover:bg-nav-active'
+              }`}
+            >
+              {DIFFICULTY_CONFIG[d].label}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main game ───────────────────────────────────────────────────────────────
+
+function AnagramGame({ difficulty }: { difficulty: Difficulty }) {
   const { state, selectLetter, unselectLetter, clearAnswer, reshuffleAvailable, nextRound, restart } = useAnagram(difficulty);
   const { word, available, answer, timeLeft, totalTime, score, round, totalRounds, status } = state;
 
   const answerComplete = answer.every((l) => l !== null);
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 max-w-lg mx-auto w-full px-4 py-3 gap-3">
+    <div className="flex flex-col flex-1 min-h-0 max-w-lg mx-auto w-full px-4 py-3 gap-3 overflow-hidden">
 
       {/* Header row: score + round + timer */}
       <div className="flex items-center gap-3">
@@ -213,13 +241,13 @@ function AnagramGame({ difficulty, onChangeDifficulty }: { difficulty: Difficult
       <div className="flex gap-2 justify-center mt-auto">
         <button
           onClick={clearAnswer}
-          className="px-4 py-2 rounded-lg border border-border-default text-text-secondary text-sm hover:text-white hover:border-white transition-colors"
+          className="px-4 py-2 rounded-lg border border-border-default text-text-secondary text-sm hover:text-text-primary hover:border-border-filled transition-colors"
         >
           Vymazat
         </button>
         <button
           onClick={reshuffleAvailable}
-          className="px-4 py-2 rounded-lg border border-border-default text-text-secondary text-sm hover:text-white hover:border-white transition-colors"
+          className="px-4 py-2 rounded-lg border border-border-default text-text-secondary text-sm hover:text-text-primary hover:border-border-filled transition-colors"
         >
           Zamíchat
         </button>
@@ -237,7 +265,7 @@ function AnagramGame({ difficulty, onChangeDifficulty }: { difficulty: Difficult
         <div className="fixed inset-0 z-40 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}>
           <div className="animate-modal-in bg-bg-secondary border border-border-default rounded-xl w-full max-w-xs p-6 text-center">
             <div className="text-4xl mb-2">✅</div>
-            <h3 className="text-xl font-bold text-white">
+            <h3 className="text-xl font-bold text-text-primary">
               <span className="uppercase">{word}</span>
             </h3>
             <p className="text-tile-correct mt-1 font-bold">
@@ -262,7 +290,7 @@ function AnagramGame({ difficulty, onChangeDifficulty }: { difficulty: Difficult
           status={status}
           word={word}
           onRestart={restart}
-          onChangeDifficulty={onChangeDifficulty}
+          onChangeDifficulty={restart}
         />
       )}
     </div>
@@ -279,9 +307,9 @@ export default function AnagramPage() {
   }
 
   return (
-    <AnagramGame
-      difficulty={difficulty}
-      onChangeDifficulty={() => setDifficulty(null)}
-    />
+    <div className="flex flex-col flex-1 min-h-0">
+      <AnagramSubNav difficulty={difficulty} onChangeDifficulty={setDifficulty} />
+      <AnagramGame key={difficulty} difficulty={difficulty} />
+    </div>
   );
 }

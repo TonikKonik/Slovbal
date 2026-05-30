@@ -367,8 +367,8 @@ export function useGame(
       if (!czechLetters.test(upperKey)) return;
 
       setGameState((prev) => {
-        const cfg = DIFFICULTY_CONFIG[difficulty];
-        if (prev.currentCol >= cfg.letters) return prev;
+        const colLimit = prev.board[0]?.length ?? DIFFICULTY_CONFIG[difficulty].letters;
+        if (prev.currentCol >= colLimit) return prev;
 
         const newBoard = prev.board.map((row) => [...row.map((t) => ({ ...t }))]);
         newBoard[prev.currentRow][prev.currentCol] = {
@@ -393,6 +393,7 @@ export function useGame(
   const resetGame = useCallback(
     (newDifficulty?: Difficulty, newMode: GameMode = 'daily') => {
       const diff = newDifficulty || difficulty;
+      const cfg = DIFFICULTY_CONFIG[diff];
       setDifficulty(diff);
       setMode(newMode);
       setShowModal(false);
@@ -401,6 +402,13 @@ export function useGame(
       setRevealingRow(null);
       setIsShaking(false);
       setStats(loadStats(diff));
+      // Immediately reset board to correct size — prevents stale board during async fetch
+      setGameState({
+        board: createEmptyBoard(cfg.tries, cfg.letters),
+        currentRow: 0, currentCol: 0,
+        gameStatus: 'playing', solution: '',
+        letterStates: {},
+      });
       fetchWordAndRestore(diff, true, newMode === 'practice');
     },
     [difficulty, fetchWordAndRestore]

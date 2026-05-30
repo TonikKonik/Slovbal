@@ -16,15 +16,12 @@ export function GameBoard({ gameState, difficulty, isShaking, revealingRow }: Ga
 
   // Calculate tile size based on word length
   const getTileSize = () => {
-    if (config.letters === 4) return 'w-14 h-14 sm:w-16 sm:h-16';
-    if (config.letters === 5) return 'w-12 h-12 sm:w-14 sm:h-14';
-    return 'w-11 h-11 sm:w-12 sm:h-12';
+    if (config.letters === 4) return 'w-11 h-11 sm:w-14 sm:h-14';
+    if (config.letters === 5) return 'w-10 h-10 sm:w-12 sm:h-12';
+    return 'w-9 h-9 sm:w-11 sm:h-11';
   };
 
-  const getGap = () => {
-    if (config.letters === 4) return 'gap-1.5';
-    return 'gap-1';
-  };
+  const getGap = () => 'gap-1';
 
   const tileSize = getTileSize();
   const gap = getGap();
