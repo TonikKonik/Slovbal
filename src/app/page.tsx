@@ -20,7 +20,7 @@ const GAMES = [
     emoji: '🗺️',
     title: 'Místopis',
     description: 'Hádej česká místní jména — řeky, města, hory. Zadej písmeno, uvidíš nápovědu.',
-    available: false,
+    available: true,
   },
 ];
 
