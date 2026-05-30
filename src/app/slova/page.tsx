@@ -11,60 +11,34 @@ import { Modal } from '@/components/Modal';
 
 const DIFFICULTY_STORAGE_KEY = 'slovbal-difficulty';
 
+const DIFFICULTIES: Difficulty[] = ['lehka', 'stredni', 'tezka'];
+
 function DifficultySelector({ onSelect }: { onSelect: (d: Difficulty) => void }) {
-  const difficulties: Difficulty[] = ['lehka', 'stredni', 'tezka'];
-
-  const colors: Record<Difficulty, string> = {
-    lehka: 'border-tile-correct hover:bg-tile-correct',
-    stredni: 'border-tile-present hover:bg-tile-present',
-    tezka: 'border-red-500 hover:bg-red-500',
-  };
-
-  const icons: Record<Difficulty, string> = {
-    lehka: '🟢',
-    stredni: '🟡',
-    tezka: '🔴',
-  };
-
-  const descriptions: Record<Difficulty, string> = {
-    lehka: '4 písmena · 7 pokusů',
-    stredni: '5 písmen · 6 pokusů',
-    tezka: '6 písmen · 5 pokusů',
+  const subtitles: Record<Difficulty, string> = {
+    lehka: `${DIFFICULTY_CONFIG.lehka.letters} písmena · ${DIFFICULTY_CONFIG.lehka.tries} pokusů`,
+    stredni: `${DIFFICULTY_CONFIG.stredni.letters} písmen · ${DIFFICULTY_CONFIG.stredni.tries} pokusů`,
+    tezka: `${DIFFICULTY_CONFIG.tezka.letters} písmen · ${DIFFICULTY_CONFIG.tezka.tries} pokusů`,
   };
 
   return (
-    <div className="flex flex-col items-center justify-center flex-1 px-4">
-      <div className="text-center mb-12">
-        <h1 className="text-6xl font-bold text-text-primary tracking-widest mb-3">SLOVBAL</h1>
-        <p className="text-text-secondary text-lg">Česká hra na hádání slov</p>
+    <div className="flex flex-col items-center justify-center flex-1 gap-8 px-4">
+      <div className="text-center">
+        <div className="text-5xl mb-3">🔤</div>
+        <h2 className="text-3xl font-bold text-text-primary">Slova</h2>
+        <p className="text-text-secondary mt-2 max-w-xs">
+          Hádej skryté české slovo. Zelená, žlutá nebo šedá tě navedou na správnou stopu.
+        </p>
       </div>
-
-      <div className="w-full max-w-sm space-y-4">
-        <h2 className="text-text-secondary text-center text-sm uppercase tracking-widest mb-6">
-          Vyber obtížnost
-        </h2>
-        {difficulties.map((d) => (
+      <div className="flex flex-col gap-3 w-full max-w-xs">
+        <p className="text-text-secondary text-xs uppercase tracking-widest text-center">Vyber obtížnost</p>
+        {DIFFICULTIES.map((d) => (
           <button
             key={d}
             onClick={() => onSelect(d)}
-            className={`
-              w-full py-5 px-6 rounded-xl border-2 text-left
-              transition-all duration-200
-              ${colors[d]}
-              hover:text-white
-              text-text-primary
-              group
-            `}
+            className="w-full py-4 rounded-xl border border-border-default bg-bg-secondary hover:border-border-filled transition-all"
           >
-            <div className="flex items-center gap-4">
-              <span className="text-2xl">{icons[d]}</span>
-              <div>
-                <div className="text-xl font-bold">{DIFFICULTY_CONFIG[d].label}</div>
-                <div className="text-sm text-text-secondary group-hover:text-white/80 transition-colors">
-                  {descriptions[d]}
-                </div>
-              </div>
-            </div>
+            <div className="text-text-primary font-bold text-lg">{DIFFICULTY_CONFIG[d].label}</div>
+            <div className="text-text-secondary text-sm mt-0.5">{subtitles[d]}</div>
           </button>
         ))}
       </div>
@@ -86,14 +60,7 @@ export default function Home() {
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty | null>(null);
   const [hasMounted, setHasMounted] = useState(false);
 
-  // Restore last difficulty from localStorage
-  useEffect(() => {
-    setHasMounted(true);
-    const stored = localStorage.getItem(DIFFICULTY_STORAGE_KEY);
-    if (stored && ['lehka', 'stredni', 'tezka'].includes(stored)) {
-      setSelectedDifficulty(stored as Difficulty);
-    }
-  }, []);
+  useEffect(() => { setHasMounted(true); }, []);
 
   const { isSoundEnabled, toggleSound, playClick, playWhoosh, playFanfare, playError } = useSound();
 
