@@ -300,12 +300,13 @@ export function getWordForDate(date: Date, difficulty: Difficulty): string {
 }
 
 /**
- * Check if a word is valid for the given difficulty
+ * Check if a word is valid for the given difficulty.
+ * Accepts any word of the correct length made of valid Czech characters.
  */
 export function isValidWord(word: string, difficulty: Difficulty): boolean {
-  const words = getWordsForDifficulty(difficulty);
-  const normalizedWord = word.toLowerCase();
-  return words.includes(normalizedWord);
+  const config = { lehka: 4, stredni: 5, tezka: 6 }[difficulty];
+  if (word.length !== config) return false;
+  return /^[a-záčďéěíňóřšťůúýž]+$/i.test(word);
 }
 
 export default getWordsForDifficulty;
