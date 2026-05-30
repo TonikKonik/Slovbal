@@ -1,4 +1,5 @@
 export type Difficulty = 'lehka' | 'stredni' | 'tezka';
+export type GameMode = 'daily' | 'practice';
 
 export type TileState = 'empty' | 'filled' | 'correct' | 'present' | 'absent';
 

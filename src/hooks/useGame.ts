@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Difficulty, DIFFICULTY_CONFIG, GameState, Stats, Tile, TileState } from '@/types';
+import { Difficulty, GameMode, DIFFICULTY_CONFIG, GameState, Stats, Tile, TileState } from '@/types';
 import { evaluateGuess, getBestLetterState } from '@/lib/gameLogic';
-import { isValidWord } from '@/lib/words';
+import { isValidWord, getRandomWord } from '@/lib/words';
 
 const SESSION_KEY = 'slovbal-session';
 const STATS_PREFIX = 'slovbal-stats-';
@@ -87,6 +87,7 @@ function saveGameState(state: SavedGameState): void {
 export interface UseGameReturn {
   gameState: GameState;
   difficulty: Difficulty;
+  mode: GameMode;
   isLoading: boolean;
   isShaking: boolean;
   revealingRow: number | null;
@@ -95,7 +96,7 @@ export interface UseGameReturn {
   stats: Stats;
   handleKey: (key: string) => void;
   dismissModal: () => void;
-  resetGame: (newDifficulty?: Difficulty) => void;
+  resetGame: (newDifficulty?: Difficulty, newMode?: GameMode) => void;
 }
 
 export function useGame(
@@ -107,6 +108,7 @@ export function useGame(
   const config = DIFFICULTY_CONFIG[initialDifficulty];
 
   const [difficulty, setDifficulty] = useState<Difficulty>(initialDifficulty);
+  const [mode, setMode] = useState<GameMode>('daily');
   const [isLoading, setIsLoading] = useState(true);
   const [isShaking, setIsShaking] = useState(false);
   const [revealingRow, setRevealingRow] = useState<number | null>(null);
@@ -134,10 +136,23 @@ export function useGame(
     setTimeout(() => setToastMessage(null), duration);
   }, []);
 
-  // Fetch daily word and restore state
-  const fetchWordAndRestore = useCallback(async (diff: Difficulty, forceNew = false) => {
+  // Fetch daily word and restore state (or pick random for practice)
+  const fetchWordAndRestore = useCallback(async (diff: Difficulty, forceNew = false, isPractice = false) => {
     setIsLoading(true);
     const cfg = DIFFICULTY_CONFIG[diff];
+
+    // Practice mode: random word, no save/restore
+    if (isPractice) {
+      const solution = getRandomWord(diff);
+      setGameState({
+        board: createEmptyBoard(cfg.tries, cfg.letters),
+        currentRow: 0, currentCol: 0,
+        gameStatus: 'playing', solution, letterStates: {},
+      });
+      gameEndedRef.current = false;
+      setIsLoading(false);
+      return;
+    }
 
     try {
       // Check for saved game state first (skip if forceNew)
@@ -179,13 +194,13 @@ export function useGame(
         gameEndedRef.current = false;
       }
     } catch {
-      // Fallback: use empty solution, game will still work with localStorage fallback
+      // Fallback: random word
       const newState: GameState = {
         board: createEmptyBoard(cfg.tries, cfg.letters),
         currentRow: 0,
         currentCol: 0,
         gameStatus: 'playing',
-        solution: '',
+        solution: getRandomWord(diff),
         letterStates: {},
       };
       setGameState(newState);
@@ -376,16 +391,17 @@ export function useGame(
   }, []);
 
   const resetGame = useCallback(
-    (newDifficulty?: Difficulty) => {
+    (newDifficulty?: Difficulty, newMode: GameMode = 'daily') => {
       const diff = newDifficulty || difficulty;
       setDifficulty(diff);
+      setMode(newMode);
       setShowModal(false);
       gameEndedRef.current = false;
       isRevealingRef.current = false;
       setRevealingRow(null);
       setIsShaking(false);
       setStats(loadStats(diff));
-      fetchWordAndRestore(diff, true); // forceNew=true: ignoruj uložený stav
+      fetchWordAndRestore(diff, true, newMode === 'practice');
     },
     [difficulty, fetchWordAndRestore]
   );
@@ -393,6 +409,7 @@ export function useGame(
   return {
     gameState,
     difficulty,
+    mode,
     isLoading,
     isShaking,
     revealingRow,

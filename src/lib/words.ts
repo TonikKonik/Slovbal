@@ -280,6 +280,11 @@ function getWordsForDifficulty(difficulty: Difficulty): string[] {
   }
 }
 
+export function getRandomWord(difficulty: Difficulty): string {
+  const words = getWordsForDifficulty(difficulty);
+  return words[Math.floor(Math.random() * words.length)];
+}
+
 /**
  * Deterministically picks a word for a given date and difficulty
  */

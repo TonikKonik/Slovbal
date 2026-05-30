@@ -112,6 +112,7 @@ export default function Home() {
   const {
     gameState,
     difficulty,
+    mode,
     isLoading,
     isShaking,
     revealingRow,
@@ -169,27 +170,16 @@ export default function Home() {
   const handleSelectDifficulty = (d: Difficulty) => {
     localStorage.setItem(DIFFICULTY_STORAGE_KEY, d);
     setSelectedDifficulty(d);
-    resetGame(d);
+    resetGame(d, 'daily');
   };
 
   const handleChangeDifficulty = (d: Difficulty) => {
     localStorage.setItem(DIFFICULTY_STORAGE_KEY, d);
     setSelectedDifficulty(d);
-    resetGame(d);
+    resetGame(d, 'daily');
   };
 
-  const handleShowStats = () => {
-    // Show modal with current stats
-    if (gameState.gameStatus !== 'playing') {
-      // Already showing modal logic is handled by dismissModal
-    }
-    // We'll just show the modal even mid-game for stats view
-    // For simplicity, trigger with a state change
-    dismissModal();
-    setTimeout(() => {
-      // Re-open modal - this is a bit hacky but works for now
-    }, 0);
-  };
+  const handleShowStats = () => { /* modal opens via showModal state */ };
 
   // Don't render until mounted (avoid SSR/localStorage mismatch)
   if (!hasMounted) {
@@ -208,6 +198,7 @@ export default function Home() {
     <div className="flex flex-col max-w-2xl mx-auto" style={{ height: '100dvh' }}>
       <Header
         difficulty={difficulty}
+        mode={mode}
         isSoundEnabled={isSoundEnabled}
         onToggleSound={toggleSound}
         onChangeDifficulty={handleChangeDifficulty}
@@ -242,10 +233,12 @@ export default function Home() {
           gameState={gameState}
           stats={stats}
           difficulty={difficulty}
+          mode={mode}
           onClose={dismissModal}
-          onNewGame={(d) => {
-            if (d) handleChangeDifficulty(d);
-            else resetGame();
+          onNewGame={(d, m) => {
+            localStorage.setItem(DIFFICULTY_STORAGE_KEY, d);
+            setSelectedDifficulty(d);
+            resetGame(d, m);
             dismissModal();
           }}
         />

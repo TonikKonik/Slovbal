@@ -1,9 +1,10 @@
 'use client';
 
-import { Difficulty, DIFFICULTY_CONFIG } from '@/types';
+import { Difficulty, GameMode, DIFFICULTY_CONFIG } from '@/types';
 
 interface HeaderProps {
   difficulty: Difficulty | null;
+  mode?: GameMode;
   isSoundEnabled: boolean;
   onToggleSound: () => void;
   onChangeDifficulty: (d: Difficulty) => void;
@@ -14,6 +15,7 @@ const DIFFICULTIES: Difficulty[] = ['lehka', 'stredni', 'tezka'];
 
 export function Header({
   difficulty,
+  mode = 'daily',
   isSoundEnabled,
   onToggleSound,
   onChangeDifficulty,
@@ -23,11 +25,15 @@ export function Header({
     <header className="w-full border-b border-border-default">
       <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <h1 className="text-2xl font-bold text-white tracking-widest">SLOVBAL</h1>
           {difficulty && (
-            <span className="hidden sm:inline-block text-xs text-text-secondary bg-bg-secondary px-2 py-1 rounded">
-              {DIFFICULTY_CONFIG[difficulty].label}
+            <span className={`text-xs px-2 py-0.5 rounded font-medium ${
+              mode === 'practice'
+                ? 'bg-border-default text-text-secondary'
+                : 'bg-tile-correct/20 text-tile-correct'
+            }`}>
+              {mode === 'practice' ? 'Procvičování' : 'Dnešní výzva'}
             </span>
           )}
         </div>
