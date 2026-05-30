@@ -212,7 +212,7 @@ export default function Home() {
           <div className="text-text-secondary animate-pulse">Načítám slovo...</div>
         </div>
       ) : (
-        <div className="flex flex-col flex-1 min-h-0 py-1">
+        <div className="flex flex-col flex-1 min-h-0">
           <div className="flex-1 min-h-0 flex items-center justify-center">
             <GameBoard
               gameState={gameState}

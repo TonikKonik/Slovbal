@@ -58,7 +58,7 @@ function Key({ value, letterStates, onKey, small }: KeyProps) {
 
 export function Keyboard({ letterStates, onKey }: KeyboardProps) {
   return (
-    <div className="flex flex-col items-center gap-1 pb-1 sm:pb-2 px-1">
+    <div className="flex flex-col items-center gap-[3px] sm:gap-1 pt-1 pb-1 sm:pb-2 px-1">
       {ROWS.map((row, rowIndex) => {
         const isSmallRow = rowIndex === 0;
         return (
