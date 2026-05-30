@@ -8,10 +8,10 @@ interface KeyboardProps {
 }
 
 const ROWS = [
+  ['Á', 'Č', 'Ď', 'É', 'Ě', 'Í', 'Ň', 'Ó', 'Ř', 'Š', 'Ť', 'Ú', 'Ý', 'Ž'],
   ['Q', 'W', 'E', 'R', 'T', 'Z', 'U', 'I', 'O', 'P'],
   ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ů'],
   ['ENTER', 'Y', 'X', 'C', 'V', 'B', 'N', 'M', '⌫'],
-  ['Á', 'Č', 'Ď', 'É', 'Ě', 'Í', 'Ň', 'Ó', 'Ř', 'Š', 'Ť', 'Ú', 'Ý', 'Ž'],
 ];
 
 const STATE_CLASSES: Record<string, string> = {
@@ -79,7 +79,7 @@ export function Keyboard({ letterStates, onKey }: KeyboardProps) {
   return (
     <div className="flex flex-col items-center gap-1 pb-2 px-1">
       {ROWS.map((row, rowIndex) => {
-        const isSmallRow = rowIndex === 3;
+        const isSmallRow = rowIndex === 0;
         return (
           <div key={rowIndex} className="flex gap-1 justify-center flex-wrap">
             {row.map((key) => (
