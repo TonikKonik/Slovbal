@@ -188,7 +188,12 @@ const EXTRA_6: string[] = [
 // Combine and deduplicate
 function buildList(base: string[], extra: string[], len: number): string[] {
   const all = [...base, ...extra].filter((w) => w.length === len);
-  return [...new Set(all)];
+  const seen = new Set<string>();
+  return all.filter((w) => {
+    if (seen.has(w)) return false;
+    seen.add(w);
+    return true;
+  });
 }
 
 export const WORDS_4 = buildList(WORD_LISTS.lehka, EXTRA_4, 4);
