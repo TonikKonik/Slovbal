@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 const SOUND_KEY = 'slovbal-sound-enabled';
 
 const GAMES = [
-  { href: '/', label: 'Slova', emoji: '🔤' },
+  { href: '/slova', label: 'Slova', emoji: '🔤' },
   { href: '/mistopis', label: 'Místopis', emoji: '🗺️' },
   { href: '/anagram', label: 'Anagram', emoji: '🔀' },
 ];
@@ -53,12 +53,12 @@ export function TopNav() {
     <nav className="w-full border-b border-border-default bg-bg-primary">
       <div className="max-w-2xl mx-auto px-4 h-12 flex items-center justify-between">
         {/* Brand */}
-        <span className="text-lg font-bold text-white tracking-widest select-none">SLOVBAL</span>
+        <Link href="/" className="text-lg font-bold text-white tracking-widest hover:opacity-80 transition-opacity">SLOVBAL</Link>
 
         {/* Game tabs */}
         <div className="flex items-center gap-1">
           {GAMES.map(({ href, label, emoji }) => {
-            const isActive = pathname === href;
+            const isActive = pathname === href || pathname.startsWith(href + '/');
             return (
               <Link
                 key={href}
