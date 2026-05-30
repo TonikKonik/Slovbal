@@ -47,15 +47,14 @@ function Key({ value, letterStates, onKey, small }: KeyProps) {
   const isSpecial = value === 'ENTER' || value === '⌫';
   const colorClass = isSpecial ? 'bg-[#565758] text-white border-[#565758]' : getKeyClass(value, letterStates);
 
-  const handlePress = (e: React.MouseEvent | React.TouchEvent) => {
+  const handlePress = (e: React.MouseEvent) => {
     e.preventDefault();
     onKey(value);
   };
 
   return (
     <button
-      onMouseDown={handlePress}
-      onTouchStart={handlePress}
+      onClick={handlePress}
       className={`
         ${colorClass}
         ${isSpecial
