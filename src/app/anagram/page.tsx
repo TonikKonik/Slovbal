@@ -154,14 +154,42 @@ function GameOverOverlay({
 
 // ─── Main game ───────────────────────────────────────────────────────────────
 
-function AnagramGame({ difficulty, onChangeDifficulty }: { difficulty: Difficulty; onChangeDifficulty: () => void }) {
+// ─── Sub-nav ─────────────────────────────────────────────────────────────────
+
+function AnagramSubNav({ difficulty, onChangeDifficulty }: { difficulty: Difficulty; onChangeDifficulty: (d: Difficulty) => void }) {
+  return (
+    <div className="w-full border-b border-border-default bg-bg-primary">
+      <div className="max-w-lg mx-auto px-4 h-10 flex items-center">
+        <div className="flex items-center gap-1">
+          {DIFFICULTIES.map((d) => (
+            <button
+              key={d}
+              onClick={() => onChangeDifficulty(d)}
+              className={`px-3 py-1 rounded text-xs font-semibold transition-colors ${
+                d === difficulty
+                  ? 'bg-tile-correct text-white'
+                  : 'text-text-secondary hover:text-text-primary hover:bg-nav-active'
+              }`}
+            >
+              {DIFFICULTY_CONFIG[d].label}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main game ───────────────────────────────────────────────────────────────
+
+function AnagramGame({ difficulty }: { difficulty: Difficulty }) {
   const { state, selectLetter, unselectLetter, clearAnswer, reshuffleAvailable, nextRound, restart } = useAnagram(difficulty);
   const { word, available, answer, timeLeft, totalTime, score, round, totalRounds, status } = state;
 
   const answerComplete = answer.every((l) => l !== null);
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 max-w-lg mx-auto w-full px-4 py-3 gap-3">
+    <div className="flex flex-col flex-1 min-h-0 max-w-lg mx-auto w-full px-4 py-3 gap-3 overflow-hidden">
 
       {/* Header row: score + round + timer */}
       <div className="flex items-center gap-3">
@@ -262,7 +290,7 @@ function AnagramGame({ difficulty, onChangeDifficulty }: { difficulty: Difficult
           status={status}
           word={word}
           onRestart={restart}
-          onChangeDifficulty={onChangeDifficulty}
+          onChangeDifficulty={restart}
         />
       )}
     </div>
@@ -279,9 +307,9 @@ export default function AnagramPage() {
   }
 
   return (
-    <AnagramGame
-      difficulty={difficulty}
-      onChangeDifficulty={() => setDifficulty(null)}
-    />
+    <div className="flex flex-col flex-1 min-h-0">
+      <AnagramSubNav difficulty={difficulty} onChangeDifficulty={setDifficulty} />
+      <AnagramGame key={difficulty} difficulty={difficulty} />
+    </div>
   );
 }
