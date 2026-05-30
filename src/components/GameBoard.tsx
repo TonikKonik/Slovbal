@@ -30,7 +30,7 @@ export function GameBoard({ gameState, difficulty, isShaking, revealingRow }: Ga
   const gap = getGap();
 
   return (
-    <div className="flex flex-col items-center justify-center flex-1">
+    <div className="flex flex-col items-center justify-center">
       <div className={`flex flex-col ${gap}`}>
         {board.map((row, rowIndex) => {
           const isCurrentRow = rowIndex === currentRow;

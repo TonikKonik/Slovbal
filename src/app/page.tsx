@@ -205,7 +205,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col h-screen max-w-2xl mx-auto overflow-hidden">
+    <div className="flex flex-col max-w-2xl mx-auto" style={{ height: '100dvh' }}>
       <Header
         difficulty={difficulty}
         isSoundEnabled={isSoundEnabled}
@@ -223,13 +223,15 @@ export default function Home() {
           <div className="text-text-secondary animate-pulse">Načítám slovo...</div>
         </div>
       ) : (
-        <div className="flex flex-col flex-1 overflow-hidden py-2">
-          <GameBoard
-            gameState={gameState}
-            difficulty={difficulty}
-            isShaking={isShaking}
-            revealingRow={revealingRow}
-          />
+        <div className="flex flex-col flex-1 min-h-0 py-2">
+          <div className="flex-1 min-h-0 flex items-center justify-center">
+            <GameBoard
+              gameState={gameState}
+              difficulty={difficulty}
+              isShaking={isShaking}
+              revealingRow={revealingRow}
+            />
+          </div>
           <Keyboard letterStates={gameState.letterStates} onKey={handleKeyPress} />
         </div>
       )}
