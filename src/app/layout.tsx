@@ -13,6 +13,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="cs">
+      <head>
+        {/* Apply saved theme before first paint — prevents flash */}
+        <script dangerouslySetInnerHTML={{ __html: `(function(){var t=localStorage.getItem('slovbal-theme');if(t)document.documentElement.setAttribute('data-theme',t);})()` }} />
+      </head>
       <body className="bg-bg-primary text-text-primary antialiased" style={{ height: '100dvh', display: 'flex', flexDirection: 'column' }}>
         <TopNav />
         {children}

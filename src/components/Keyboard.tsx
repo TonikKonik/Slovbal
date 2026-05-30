@@ -18,7 +18,7 @@ const STATE_CLASSES: Record<string, string> = {
   correct: 'bg-key-correct text-white border-key-correct',
   present: 'bg-key-present text-white border-key-present',
   absent: 'bg-key-absent text-white border-key-absent',
-  default: 'bg-key-default text-white border-key-default',
+  default: 'bg-key-default text-text-primary border-key-default',
 };
 
 function getKeyClass(key: string, letterStates: Record<string, TileState>): string {
@@ -35,7 +35,7 @@ interface KeyProps {
 
 function Key({ value, letterStates, onKey, small }: KeyProps) {
   const isSpecial = value === 'ENTER' || value === '⌫';
-  const colorClass = isSpecial ? 'bg-[#565758] text-white border-[#565758]' : getKeyClass(value, letterStates);
+  const colorClass = isSpecial ? 'bg-key-special text-white border-key-special' : getKeyClass(value, letterStates);
 
   return (
     <button

@@ -3,15 +3,38 @@
 @tailwind utilities;
 
 :root {
+  /* Game colors — static, same in both themes */
   --color-correct: #538d4e;
   --color-present: #b59f3b;
-  --color-absent: #3a3a3c;
+
+  /* Dark theme (default) */
   --color-bg: #121213;
   --color-bg-secondary: #1a1a1b;
   --color-border: #3a3a3c;
   --color-border-filled: #565758;
   --color-text: #ffffff;
   --color-text-secondary: #818384;
+  --color-key-default: #818384;
+  --color-key-absent: #3a3a3c;
+  --color-key-special: #565758;
+  --color-tile-empty: #121213;
+  --color-tile-filled: #121213;
+  --nav-active-bg: rgba(255, 255, 255, 0.10);
+}
+
+[data-theme="light"] {
+  --color-bg: #f9f9f9;
+  --color-bg-secondary: #ffffff;
+  --color-border: #d3d6da;
+  --color-border-filled: #878a8c;
+  --color-text: #1a1a1b;
+  --color-text-secondary: #787c7e;
+  --color-key-default: #d3d6da;
+  --color-key-absent: #878a8c;
+  --color-key-special: #a0a3a6;
+  --color-tile-empty: #ffffff;
+  --color-tile-filled: #ffffff;
+  --nav-active-bg: rgba(0, 0, 0, 0.08);
 }
 
 * {

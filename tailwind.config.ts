@@ -9,21 +9,25 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        /* Static game colors */
         "tile-correct": "#538d4e",
         "tile-present": "#b59f3b",
-        "tile-absent": "#3a3a3c",
-        "tile-empty": "#121213",
-        "tile-filled": "#121213",
+        /* Theme-adaptive colors via CSS variables */
+        "tile-absent": "var(--color-key-absent)",
+        "tile-empty": "var(--color-tile-empty)",
+        "tile-filled": "var(--color-tile-filled)",
         "key-correct": "#538d4e",
         "key-present": "#b59f3b",
-        "key-absent": "#3a3a3c",
-        "key-default": "#818384",
-        "bg-primary": "#121213",
-        "bg-secondary": "#1a1a1b",
-        "border-default": "#3a3a3c",
-        "border-filled": "#565758",
-        "text-primary": "#ffffff",
-        "text-secondary": "#818384",
+        "key-absent": "var(--color-key-absent)",
+        "key-default": "var(--color-key-default)",
+        "key-special": "var(--color-key-special)",
+        "bg-primary": "var(--color-bg)",
+        "bg-secondary": "var(--color-bg-secondary)",
+        "border-default": "var(--color-border)",
+        "border-filled": "var(--color-border-filled)",
+        "text-primary": "var(--color-text)",
+        "text-secondary": "var(--color-text-secondary)",
+        "nav-active": "var(--nav-active-bg)",
       },
       keyframes: {
         flip: {
