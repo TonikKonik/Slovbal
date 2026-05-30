@@ -135,13 +135,13 @@ export function useGame(
   }, []);
 
   // Fetch daily word and restore state
-  const fetchWordAndRestore = useCallback(async (diff: Difficulty) => {
+  const fetchWordAndRestore = useCallback(async (diff: Difficulty, forceNew = false) => {
     setIsLoading(true);
     const cfg = DIFFICULTY_CONFIG[diff];
 
     try {
-      // Check for saved game state first
-      const saved = loadGameState(diff);
+      // Check for saved game state first (skip if forceNew)
+      const saved = forceNew ? null : loadGameState(diff);
 
       const res = await fetch(`/api/daily-word?difficulty=${diff}`);
       const data = await res.json();
@@ -385,7 +385,7 @@ export function useGame(
       setRevealingRow(null);
       setIsShaking(false);
       setStats(loadStats(diff));
-      fetchWordAndRestore(diff);
+      fetchWordAndRestore(diff, true); // forceNew=true: ignoruj uložený stav
     },
     [difficulty, fetchWordAndRestore]
   );
