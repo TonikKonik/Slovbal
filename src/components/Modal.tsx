@@ -57,7 +57,7 @@ function useCountdown() {
 function StatBox({ label, value }: { label: string; value: number | string }) {
   return (
     <div className="flex flex-col items-center">
-      <span className="text-2xl font-bold text-white">{value}</span>
+      <span className="text-2xl font-bold text-text-primary">{value}</span>
       <span className="text-xs text-text-secondary text-center mt-1">{label}</span>
     </div>
   );
@@ -104,7 +104,7 @@ export function Modal({ gameState, stats, difficulty, mode, onClose, onNewGame }
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div className="animate-modal-in bg-bg-secondary border border-border-default rounded-xl w-full max-w-sm p-6 relative overflow-y-auto max-h-[90vh]">
-        <button onClick={onClose} className="absolute top-4 right-4 text-text-secondary hover:text-white transition-colors text-xl" aria-label="Zavřít">✕</button>
+        <button onClick={onClose} className="absolute top-4 right-4 text-text-secondary hover:text-text-primary transition-colors text-xl" aria-label="Zavřít">✕</button>
 
         {/* Mode badge */}
         {isPractice && (
@@ -118,7 +118,7 @@ export function Modal({ gameState, stats, difficulty, mode, onClose, onNewGame }
           {isWon ? (
             <>
               <div className="text-4xl mb-2">🎉</div>
-              <h2 className="text-2xl font-bold text-white">{winMessage}</h2>
+              <h2 className="text-2xl font-bold text-text-primary">{winMessage}</h2>
               <p className="text-text-secondary mt-1">
                 Uhodl jsi za {triesUsed} {triesUsed === 1 ? 'pokus' : triesUsed < 5 ? 'pokusy' : 'pokusů'}
               </p>
@@ -126,9 +126,9 @@ export function Modal({ gameState, stats, difficulty, mode, onClose, onNewGame }
           ) : (
             <>
               <div className="text-4xl mb-2">😔</div>
-              <h2 className="text-2xl font-bold text-white">Příště lépe!</h2>
+              <h2 className="text-2xl font-bold text-text-primary">Příště lépe!</h2>
               <p className="text-text-secondary mt-1">
-                Slovo bylo: <span className="text-white font-bold uppercase">{gameState.solution}</span>
+                Slovo bylo: <span className="text-text-primary font-bold uppercase">{gameState.solution}</span>
               </p>
             </>
           )}
@@ -171,7 +171,7 @@ export function Modal({ gameState, stats, difficulty, mode, onClose, onNewGame }
               <div className="flex gap-2">
                 {unplayedDailyDifficulties.map((diff) => (
                   <button key={diff} onClick={() => onNewGame(diff, 'daily')}
-                    className="flex-1 py-3 rounded-lg font-bold text-sm bg-bg-primary text-text-secondary hover:bg-border-default hover:text-white border border-border-default transition-colors">
+                    className="flex-1 py-3 rounded-lg font-bold text-sm bg-bg-primary text-text-secondary hover:bg-border-default hover:text-text-primary border border-border-default transition-colors">
                     {DIFFICULTY_CONFIG[diff].label}
                   </button>
                 ))}
@@ -199,14 +199,14 @@ export function Modal({ gameState, stats, difficulty, mode, onClose, onNewGame }
               {allDailyPlayed && (
                 <div className="text-center py-1">
                   <p className="text-text-secondary text-xs">Nová denní slova za</p>
-                  <p className="text-white text-2xl font-bold font-mono mt-1">{timeLeft}</p>
+                  <p className="text-text-primary text-2xl font-bold font-mono mt-1">{timeLeft}</p>
                 </div>
               )}
 
               <div className="border-t border-border-default pt-3">
                 <button
                   onClick={() => onNewGame(difficulty, 'practice')}
-                  className="w-full py-3 rounded-lg font-bold text-sm bg-bg-primary text-text-secondary hover:bg-border-default hover:text-white border border-border-default transition-colors"
+                  className="w-full py-3 rounded-lg font-bold text-sm bg-bg-primary text-text-secondary hover:bg-border-default hover:text-text-primary border border-border-default transition-colors"
                 >
                   Procvičovat (náhodné slovo)
                 </button>

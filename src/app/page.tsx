@@ -28,7 +28,7 @@ export default function HomePage() {
   return (
     <div className="flex flex-col items-center justify-center flex-1 px-4 gap-10">
       <div className="text-center">
-        <h1 className="text-5xl font-bold text-white tracking-widest">SLOVBAL</h1>
+        <h1 className="text-5xl font-bold text-text-primary tracking-widest">SLOVBAL</h1>
         <p className="text-text-secondary mt-2">České slovní hry</p>
       </div>
 
@@ -38,14 +38,14 @@ export default function HomePage() {
             <Link
               key={href}
               href={href}
-              className="flex items-start gap-4 p-4 rounded-xl border border-border-default bg-bg-secondary hover:border-white hover:bg-white/5 transition-all group"
+              className="flex items-start gap-4 p-4 rounded-xl border border-border-default bg-bg-secondary hover:border-border-filled transition-all group"
             >
               <span className="text-3xl mt-0.5">{emoji}</span>
               <div className="flex-1 min-w-0">
-                <div className="text-white font-bold text-lg group-hover:text-white">{title}</div>
+                <div className="text-text-primary font-bold text-lg">{title}</div>
                 <div className="text-text-secondary text-sm mt-0.5 leading-snug">{description}</div>
               </div>
-              <svg className="text-text-secondary group-hover:text-white mt-1 flex-none transition-colors" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <svg className="text-text-secondary mt-1 flex-none" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
               </svg>
             </Link>
@@ -57,7 +57,7 @@ export default function HomePage() {
               <span className="text-3xl mt-0.5">{emoji}</span>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <div className="text-white font-bold text-lg">{title}</div>
+                  <div className="text-text-primary font-bold text-lg">{title}</div>
                   <span className="text-xs bg-border-default text-text-secondary px-2 py-0.5 rounded-full uppercase tracking-wider">Brzy</span>
                 </div>
                 <div className="text-text-secondary text-sm mt-0.5 leading-snug">{description}</div>

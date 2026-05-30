@@ -24,7 +24,7 @@ export function SlovaSubNav({ difficulty, mode, onChangeDifficulty, onShowStats 
               className={`px-3 py-1 rounded text-xs font-semibold transition-colors ${
                 d === difficulty
                   ? 'bg-tile-correct text-white'
-                  : 'text-text-secondary hover:text-white hover:bg-white/5'
+                  : 'text-text-secondary hover:text-text-primary hover:bg-nav-active'
               }`}
             >
               {DIFFICULTY_CONFIG[d].label}
@@ -43,7 +43,7 @@ export function SlovaSubNav({ difficulty, mode, onChangeDifficulty, onShowStats 
           </span>
           <button
             onClick={onShowStats}
-            className="text-text-secondary hover:text-white transition-colors p-1"
+            className="text-text-secondary hover:text-text-primary transition-colors p-1"
             title="Statistiky"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">

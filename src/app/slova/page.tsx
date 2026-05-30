@@ -35,7 +35,7 @@ function DifficultySelector({ onSelect }: { onSelect: (d: Difficulty) => void })
   return (
     <div className="flex flex-col items-center justify-center flex-1 px-4">
       <div className="text-center mb-12">
-        <h1 className="text-6xl font-bold text-white tracking-widest mb-3">SLOVBAL</h1>
+        <h1 className="text-6xl font-bold text-text-primary tracking-widest mb-3">SLOVBAL</h1>
         <p className="text-text-secondary text-lg">Česká hra na hádání slov</p>
       </div>
 
@@ -52,7 +52,7 @@ function DifficultySelector({ onSelect }: { onSelect: (d: Difficulty) => void })
               transition-all duration-200
               ${colors[d]}
               hover:text-white
-              text-white
+              text-text-primary
               group
             `}
           >
