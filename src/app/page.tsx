@@ -6,7 +6,7 @@ import { useGame } from '@/hooks/useGame';
 import { useSound } from '@/hooks/useSound';
 import { GameBoard } from '@/components/GameBoard';
 import { Keyboard } from '@/components/Keyboard';
-import { Header } from '@/components/Header';
+import { SlovaSubNav } from '@/components/SlovaSubNav';
 import { Modal } from '@/components/Modal';
 
 const DIFFICULTY_STORAGE_KEY = 'slovbal-difficulty';
@@ -33,7 +33,7 @@ function DifficultySelector({ onSelect }: { onSelect: (d: Difficulty) => void })
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-4">
+    <div className="flex flex-col items-center justify-center flex-1 px-4">
       <div className="text-center mb-12">
         <h1 className="text-6xl font-bold text-white tracking-widest mb-3">SLOVBAL</h1>
         <p className="text-text-secondary text-lg">Česká hra na hádání slov</p>
@@ -195,12 +195,10 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col max-w-2xl mx-auto" style={{ height: '100dvh' }}>
-      <Header
+    <div className="flex flex-col flex-1 min-h-0 max-w-2xl mx-auto w-full">
+      <SlovaSubNav
         difficulty={difficulty}
         mode={mode}
-        isSoundEnabled={isSoundEnabled}
-        onToggleSound={toggleSound}
         onChangeDifficulty={handleChangeDifficulty}
         onShowStats={handleShowStats}
       />
@@ -214,7 +212,7 @@ export default function Home() {
           <div className="text-text-secondary animate-pulse">Načítám slovo...</div>
         </div>
       ) : (
-        <div className="flex flex-col flex-1 min-h-0 py-2">
+        <div className="flex flex-col flex-1 min-h-0 py-1">
           <div className="flex-1 min-h-0 flex items-center justify-center">
             <GameBoard
               gameState={gameState}
