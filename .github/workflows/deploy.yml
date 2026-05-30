@@ -1,0 +1,42 @@
+name: Deploy to Hetzner
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Write .env.local
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          DB_URL: ${{ secrets.SLOVBAL_DATABASE_URL }}
+          AUTH_SECRET: ${{ secrets.SLOVBAL_AUTH_SECRET }}
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          envs: DB_URL,AUTH_SECRET
+          script: |
+            printf "DATABASE_URL=%s\nAUTH_SECRET=%s\n" "$DB_URL" "$AUTH_SECRET" > /var/www/slovbal/.env.local
+            echo env written
+
+      - name: Deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            set -e
+            cd /var/www/slovbal
+            git pull origin main
+            npm ci
+            npm run build
+            pm2 delete slovbal 2>/dev/null || true
+            pm2 start pm2.config.js && pm2 save
+            echo deploy done
